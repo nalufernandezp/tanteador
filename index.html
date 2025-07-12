@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tanteador en vivo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: white;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .scoreboard {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 90%;
+      max-width: 600px;
+      margin-top: 50px;
+      background-color: #222;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    .team {
+      flex: 1;
+      text-align: center;
+    }
+    .team-name {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+    .alkimia {
+      color: #7fffd4; /* Verde agua */
+    }
+    .evp {
+      color: #ff8fcb; /* Rosado */
+    }
+    .score {
+      font-size: 3em;
+      font-weight: bold;
+    }
+    .sets {
+      margin-top: 10px;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <h1>Tanteador en Vivo</h1>
+  <div class="scoreboard">
+    <div class="team alkimia">
+      <div class="team-name">ALKIMIA</div>
+      <div class="score" id="score-alkimia">0</div>
+      <div class="sets" id="sets-alkimia">Sets: 0</div>
+    </div>
+    <div class="team evp">
+      <div class="team-name">EVP</div>
+      <div class="score" id="score-evp">0</div>
+      <div class="sets" id="sets-evp">Sets: 0</div>
+    </div>
+  </div>
+
+  <script>
+    async function actualizarTanteador() {
+      try {
+        const proxyUrl = "https://cors-anywhere.herokuapp.com/";
+        const url = "https://livosur-web.dataproject.com/LiveScore_adv.aspx?ID=10828";
+        const response = await fetch(proxyUrl + url);
+        const text = await response.text();
+
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(text, "text/html");
+
+        // Simulamos datos por ahora
+        document.getElementById("score-alkimia").textContent = Math.floor(Math.random() * 30);
+        document.getElementById("score-evp").textContent = Math.floor(Math.random() * 30);
+        document.getElementById("sets-alkimia").textContent = "Sets: " + Math.floor(Math.random() * 3);
+        document.getElementById("sets-evp").textContent = "Sets: " + Math.floor(Math.random() * 3);
+
+      } catch (err) {
+        console.error("Error al actualizar tanteador:", err);
+      }
+    }
+
+    actualizarTanteador();
+    setInterval(actualizarTanteador, 5000);
+  </script>
+</body>
+</html>
